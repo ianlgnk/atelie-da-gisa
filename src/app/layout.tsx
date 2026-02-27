@@ -1,10 +1,31 @@
 import "./globals.css";
 
+import type { Metadata } from "next";
+import { IBM_Plex_Mono, Libre_Baskerville, Poppins } from "next/font/google";
+
+const fontSans = Poppins({
+  subsets: ["latin"],
+  variable: "--font-sans",
+  weight: ["300", "400", "500", "600", "700"],
+});
+
+const fontSerif = Libre_Baskerville({
+  subsets: ["latin"],
+  variable: "--font-serif",
+  weight: ["400", "700"],
+});
+
+const fontMono = IBM_Plex_Mono({
+  subsets: ["latin"],
+  variable: "--font-mono",
+  weight: ["400", "500", "600"],
+});
+
 type RootLayoutProps = {
   children: React.ReactNode;
 };
 
-export const metadata = {
+export const metadata: Metadata = {
   title: "Ateliê da Gisa",
   description: "SPA p/ Vendas de Macramê - Dona Gisele",
 };
@@ -12,7 +33,9 @@ export const metadata = {
 export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html lang="pt-BR">
-      <body className="min-h-screen bg-white text-zinc-900 antialiased">
+      <body
+        className={`${fontSans.variable} ${fontSerif.variable} ${fontMono.variable} min-h-screen bg-white text-zinc-900 antialiased`}
+      >
         {children}
       </body>
     </html>
