@@ -18,7 +18,7 @@ const iconProps = {
 export default function NotFound() {
   return (
     <motion.main
-      className="relative mx-auto flex min-h-screen max-w-3xl flex-col items-center justify-center gap-6 p-6 text-center"
+      className="relative mx-auto flex h-full max-w-3xl flex-col items-center justify-center gap-6 p-6 text-center"
       initial={{ opacity: 0, y: 18 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6, ease: "easeOut" }}

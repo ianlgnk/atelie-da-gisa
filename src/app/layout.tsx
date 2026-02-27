@@ -3,6 +3,9 @@ import "./globals.css";
 import type { Metadata } from "next";
 import { IBM_Plex_Mono, Libre_Baskerville, Poppins } from "next/font/google";
 
+import SiteShell from "@/components/site-shell";
+import { ThemeProvider } from "@/components/theme-provider";
+
 const fontSans = Poppins({
   subsets: ["latin"],
   variable: "--font-sans",
@@ -32,11 +35,18 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: RootLayoutProps) {
   return (
-    <html lang="pt-BR">
+    <html lang="pt-BR" suppressHydrationWarning>
       <body
         className={`${fontSans.variable} ${fontSerif.variable} ${fontMono.variable} min-h-screen bg-white text-zinc-900 antialiased`}
       >
-        {children}
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="light"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <SiteShell>{children}</SiteShell>
+        </ThemeProvider>
       </body>
     </html>
   );
