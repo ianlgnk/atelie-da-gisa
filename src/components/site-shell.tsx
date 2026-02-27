@@ -4,6 +4,7 @@ import {
   IconArrowUpRight,
   IconFlower,
   IconHeart,
+  IconHome,
   IconMoon,
   IconPhoto,
   IconSparkles,
@@ -49,7 +50,10 @@ function MobileNavMenu() {
             const Icon = item.icon;
             return (
               <SidebarMenuItem key={item.href}>
-                <SidebarMenuButton asChild>
+                <SidebarMenuButton
+                  asChild
+                  className="transition-colors hover:text-primary data-[active=true]:text-primary"
+                >
                   <Link href={item.href} onClick={() => setOpenMobile(false)}>
                     <Icon />
                     <span>{item.label}</span>
@@ -80,19 +84,24 @@ export default function SiteShell({ children }: { children: React.ReactNode }) {
         <MobileNavMenu />
       </Sidebar>
       <div className="flex min-h-svh w-full flex-col">
-        <header className="sticky top-0 z-30 border-b border-border/70 bg-background/80 backdrop-blur">
-          <div className="mx-auto flex max-w-5xl items-center justify-between px-6 py-3">
+        <header className="fixed top-0 z-30 border-b border-border/70 bg-background/80 backdrop-blur w-full">
+          <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-3">
             <div className="flex items-center gap-2 text-sm font-semibold">
               <IconFlower className="h-4 w-4" stroke={1.6} />
               Ateliê da Gisa
             </div>
-            <nav className="hidden items-center gap-6 text-sm text-muted-foreground md:flex">
+            <nav className="hidden items-center gap-6 text-sm font-semibold text-muted-foreground md:flex">
               {navItems.map((item) => (
                 <a
                   key={item.href}
                   href={item.href}
-                  className="transition-colors hover:text-foreground"
+                  className="relative flex items-center gap-2 transition-colors hover:text-primary after:absolute after:-bottom-1 after:left-0 after:h-[2px] after:w-0 after:bg-primary after:transition-all after:duration-300 hover:after:w-full"
                 >
+                  {item.label === "Início" ? (
+                    <IconHome className="size-4" />
+                  ) : (
+                    <item.icon className="size-4" />
+                  )}
                   {item.label}
                 </a>
               ))}

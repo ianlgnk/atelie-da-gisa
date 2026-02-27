@@ -62,7 +62,7 @@ export default function NotFound() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.55, delay: 0.2 }}
       >
-        <div className="rounded-xl border border-border bg-card p-4 shadow-sm transition-transform duration-200 ease-out hover:-translate-y-1">
+        <div className="rounded-xl border border-border bg-card p-4 shadow-sm transition-transform ease-out hover:-translate-y-1">
           <div className="mb-2 flex items-center gap-2 text-sm font-semibold text-foreground">
             <IconRosette {...iconProps} />
             Dica carinhosa
@@ -71,7 +71,7 @@ export default function NotFound() {
             Use o menu principal para encontrar as peças e conhecer o ateliê.
           </p>
         </div>
-        <div className="rounded-xl border border-border bg-card p-4 shadow-sm transition-transform duration-200 ease-out hover:-translate-y-1">
+        <div className="rounded-xl border border-border bg-card p-4 shadow-sm transition-transform ease-out hover:-translate-y-1">
           <div className="mb-2 flex items-center gap-2 text-sm font-semibold text-foreground">
             <IconSparkles {...iconProps} />
             Voltar com calma
@@ -80,7 +80,7 @@ export default function NotFound() {
             Você pode reiniciar sua visita pela página inicial, sem pressa.
           </p>
         </div>
-        <div className="rounded-xl border border-border bg-card p-4 shadow-sm transition-transform duration-200 ease-out hover:-translate-y-1">
+        <div className="rounded-xl border border-border bg-card p-4 shadow-sm transition-transform ease-out hover:-translate-y-1">
           <div className="mb-2 flex items-center gap-2 text-sm font-semibold text-foreground">
             <IconHome {...iconProps} />
             Caminho seguro

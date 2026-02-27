@@ -81,15 +81,32 @@ const testimonials = [
 export default function HomePage() {
   return (
     <main className="bg-background text-foreground">
-      <section id="inicio" className="relative scroll-mt-24 overflow-hidden">
-        <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.8),rgba(255,255,255,0))]" />
-        <div className="absolute left-1/2 top-0 -z-10 h-72 w-[38rem] -translate-x-1/2 rounded-full bg-accent/60 blur-3xl" />
-        <div className="mx-auto flex max-w-5xl flex-col gap-10 px-6 pb-16 pt-5 sm:pt-10">
+      <section
+        id="inicio"
+        className="relative overflow-hidden min-h-screen flex justify-center items-center"
+      >
+        <div className="absolute inset-0">
+          <video
+            className="h-full w-full object-cover"
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="metadata"
+            aria-hidden="true"
+          >
+            <source
+              src="https://videos.pexels.com/video-files/33351040/14200908_3840_2160_24fps.mp4"
+              type="video/mp4"
+            />
+          </video>
+        </div>
+        <div className="relative mx-auto flex max-w-6xl flex-col gap-10 px-6 pb-16 pt-5 sm:pt-30">
           <div className="flex flex-col gap-4">
-            <h1 className="text-4xl font-semibold leading-tight tracking-tight sm:text-5xl">
+            <h1 className="text-4xl font-semibold leading-tight tracking-tight sm:text-5xl text-white">
               Peças de macramê que trazem calma, beleza e afeto para o seu lar.
             </h1>
-            <p className="max-w-2xl text-base leading-relaxed text-muted-foreground sm:text-lg">
+            <p className="max-w-2xl text-base leading-relaxed sm:text-lg text-white">
               No coração do ateliê, Dona Gisele transforma fios em arte. Cada
               peça é feita com tempo e carinho, para quem valoriza o artesanal e
               o aconchego.
@@ -117,15 +134,18 @@ export default function HomePage() {
               return (
                 <div
                   key={feature.title}
-                  className="rounded-2xl border border-border bg-card p-5 shadow-sm"
+                  className="group relative rounded-2xl border border-border bg-card p-5 text-foreground shadow-sm transition-all  ease-out hover:-translate-y-1 hover:bg-foreground hover:text-background hover:shadow-lg"
                 >
-                  <div className="mb-3 inline-flex h-10 w-10 items-center justify-center rounded-full bg-accent">
-                    <Icon className="h-5 w-5 text-foreground" stroke={1.6} />
+                  <div className="mb-3 inline-flex h-10 w-10 items-center justify-center rounded-full bg-accent transition-colors  group-hover:bg-background/20">
+                    <Icon
+                      className="h-5 w-5 text-foreground transition-colors group-hover:text-background"
+                      stroke={1.6}
+                    />
                   </div>
-                  <h3 className="text-base font-semibold text-foreground">
+                  <h3 className="text-base font-semibold text-foreground transition-colors group-hover:text-background">
                     {feature.title}
                   </h3>
-                  <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+                  <p className="mt-2 text-sm leading-relaxed text-muted-foreground transition-colors group-hover:text-background/80">
                     {feature.description}
                   </p>
                 </div>
