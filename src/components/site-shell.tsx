@@ -39,19 +39,11 @@ const navItems = [
 
 function MobileNavMenu() {
   const { setOpenMobile } = useSidebar();
-  const { theme, resolvedTheme, setTheme } = useTheme();
-  const [mounted, setMounted] = React.useState(false);
-
-  React.useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  const isDark = (resolvedTheme ?? theme) === "dark";
 
   return (
     <SidebarContent>
       <SidebarGroup>
-        <SidebarGroupLabel>Navegação</SidebarGroupLabel>
+        <SidebarGroupLabel>Menu</SidebarGroupLabel>
         <SidebarMenu>
           {navItems.map((item) => {
             const Icon = item.icon;
@@ -66,16 +58,6 @@ function MobileNavMenu() {
               </SidebarMenuItem>
             );
           })}
-          {mounted && (
-            <SidebarMenuItem>
-              <SidebarMenuButton
-                onClick={() => setTheme(isDark ? "light" : "dark")}
-              >
-                {isDark ? <IconSun /> : <IconMoon />}
-                <span>Alternar tema</span>
-              </SidebarMenuButton>
-            </SidebarMenuItem>
-          )}
         </SidebarMenu>
       </SidebarGroup>
     </SidebarContent>

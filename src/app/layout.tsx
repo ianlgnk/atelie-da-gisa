@@ -3,7 +3,6 @@ import "./globals.css";
 import type { Metadata } from "next";
 import { IBM_Plex_Mono, Libre_Baskerville, Poppins } from "next/font/google";
 
-import SiteShell from "@/components/site-shell";
 import { ThemeProvider } from "@/components/theme-provider";
 
 const fontSans = Poppins({
@@ -39,13 +38,8 @@ export default function RootLayout({ children }: RootLayoutProps) {
       <body
         className={`${fontSans.variable} ${fontSerif.variable} ${fontMono.variable} min-h-screen bg-white text-zinc-900 antialiased`}
       >
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="light"
-          enableSystem
-          disableTransitionOnChange
-        >
-          <SiteShell>{children}</SiteShell>
+        <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
+          {children}
         </ThemeProvider>
       </body>
     </html>
