@@ -40,6 +40,10 @@ body {
   color: hsl(var(--foreground));
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 @theme inline {
   --font-sans: Poppins, sans-serif;
   --font-mono: IBM Plex Mono, monospace;
