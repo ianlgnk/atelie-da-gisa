@@ -14,10 +14,19 @@ import {
   IconPhoto,
   IconSparkles,
   IconStars,
-  IconX,
 } from "@tabler/icons-react";
+import Image from "next/image";
 import Link from "next/link";
 import React from "react";
+
+import heroImage from "@/assets/hero.jpg";
+import vitrine01 from "@/assets/vitrine-01.jpg";
+import vitrine02 from "@/assets/vitrine-02.jpg";
+import vitrine03 from "@/assets/vitrine-03.jpg";
+import vitrine04 from "@/assets/vitrine-04.jpg";
+import vitrine05 from "@/assets/vitrine-05.jpg";
+import vitrine06 from "@/assets/vitrine-06.jpg";
+import { VitrineLightbox } from "@/components/vitrine-lightbox";
 
 const features = [
   {
@@ -71,28 +80,28 @@ const gallery = [
 
 const vitrineImages = [
   {
-    src: "https://images.unsplash.com/photo-1519710164239-da123dc03ef4?auto=format&fit=crop&w=1400&q=80",
-    alt: "Macramê pendente",
+    src: vitrine01.src,
+    alt: "Macramê pendurado na parede",
   },
   {
-    src: "https://images.unsplash.com/photo-1501004318641-b39e6451bec6?auto=format&fit=crop&w=1400&q=80",
+    src: vitrine02.src,
+    alt: "Macramê suporte de plantas pendentes",
+  },
+  {
+    src: vitrine03.src,
+    alt: "Painel de macramê na parede",
+  },
+  {
+    src: vitrine04.src,
     alt: "Suporte de plantas em macramê",
   },
   {
-    src: "https://images.unsplash.com/photo-1483794344563-d27a8d18014e?auto=format&fit=crop&w=1400&q=80",
-    alt: "Painel decorativo em macramê",
+    src: vitrine05.src,
+    alt: "Macramê envolvido em potes de vidro",
   },
   {
-    src: "https://images.unsplash.com/photo-1523413651479-597eb2da0ad6?auto=format&fit=crop&w=1400&q=80",
-    alt: "Detalhes artesanais",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1505691938895-1758d7feb511?auto=format&fit=crop&w=1400&q=80",
-    alt: "Ambiente com peças em macramê",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1400&q=80",
-    alt: "Texturas e fibras naturais",
+    src: vitrine06.src,
+    alt: "Chaveiro em macramê",
   },
 ];
 
@@ -109,23 +118,45 @@ const testimonials = [
     name: "Sofia Martins",
     text: "O atendimento foi carinhoso e a peça chegou perfeita. Vou encomendar mais.",
   },
+  {
+    name: "Clara Monteiro",
+    text: "A peça chegou impecável. O acabamento é lindo e combinou com a sala.",
+  },
+  {
+    name: "Lucas e Fernanda",
+    text: "Pedimos um suporte de plantas e ficou maravilhoso. Atendimento atencioso.",
+  },
+  {
+    name: "Bianca Ribeiro",
+    text: "O macramê trouxe um charme especial para o quarto. Super recomendo.",
+  },
+  {
+    name: "Rafael Cardoso",
+    text: "A entrega foi rápida e a peça é ainda mais bonita ao vivo.",
+  },
+  {
+    name: "Helena Duarte",
+    text: "Cada detalhe é pensado com carinho. Dá pra sentir o cuidado no trabalho.",
+  },
+  {
+    name: "Joana Martins",
+    text: "Ficou exatamente como eu imaginei. Já quero encomendar outra peça.",
+  },
 ];
 
 export default function HomePage() {
-  const [selectedImage, setSelectedImage] = React.useState<
-    (typeof vitrineImages)[number] | null
-  >(null);
+  const [selectedIndex, setSelectedIndex] = React.useState<number | null>(null);
 
   React.useEffect(() => {
-    if (!selectedImage) return;
+    if (selectedIndex === null) return;
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
-        setSelectedImage(null);
+        setSelectedIndex(null);
       }
     };
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [selectedImage]);
+  }, [selectedIndex]);
 
   return (
     <main className="bg-background text-foreground">
@@ -134,20 +165,13 @@ export default function HomePage() {
         className="relative flex min-h-screen items-center justify-center overflow-hidden"
       >
         <div className="absolute inset-0">
-          <video
-            className="h-full w-full object-cover"
-            autoPlay
-            muted
-            loop
-            playsInline
-            preload="metadata"
-            aria-hidden="true"
-          >
-            <source
-              src="https://videos.pexels.com/video-files/33351040/14200908_3840_2160_24fps.mp4"
-              type="video/mp4"
-            />
-          </video>
+          <Image
+            src={heroImage}
+            alt="Macramê em destaque"
+            fill
+            priority
+            className="object-cover"
+          />
         </div>
         <div className="relative mx-auto flex max-w-6xl flex-col gap-10 px-6 pt-30 pb-15">
           <div className="flex flex-col gap-4">
@@ -176,7 +200,7 @@ export default function HomePage() {
               </Link>
             </div>
           </div>
-          <div className="grid gap-4 sm:grid-cols-3">
+          {/* <div className="grid gap-4 sm:grid-cols-3">
             {features.map((feature) => {
               const Icon = feature.icon;
               return (
@@ -199,7 +223,7 @@ export default function HomePage() {
                 </div>
               );
             })}
-          </div>
+          </div> */}
         </div>
       </section>
 
@@ -207,16 +231,16 @@ export default function HomePage() {
         id="sobre"
         className="border-t border-border bg-card/40 space-y-15"
       >
-        <div className="mx-auto grid max-w-6xl gap-8 px-6 pt-25 sm:grid-cols-[1.1fr_0.9fr]">
+        <div className="mx-auto grid max-w-6xl gap-10 px-6 pt-25 lg:grid-cols-[0.85fr_1.15fr]">
           <div className="space-y-4">
             <div className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-muted-foreground">
               <IconSparkles className="h-4 w-4" stroke={1.6} />
               Sobre o ateliê
             </div>
-            <h2 className="text-3xl font-semibold tracking-tight">
+            <h2 className="text-2xl font-semibold tracking-tight lg:text-3xl">
               Uma história de família, fios e cuidado em cada detalhe.
             </h2>
-            <p className="text-base leading-relaxed text-muted-foreground">
+            <p className="text-sm leading-relaxed text-muted-foreground lg:text-base">
               O Ateliê da Gisa nasceu do amor pelo feito à mão. Dona Gisele cria
               macramês que transformam ambientes com textura, leveza e
               personalidade.
@@ -228,31 +252,45 @@ export default function HomePage() {
             </div>
           </div>
           <div className="rounded-3xl border border-border bg-background p-6 shadow-sm">
-            <div className="flex items-center gap-3">
-              <div className="rounded-full bg-accent p-3">
-                <IconHeart className="h-6 w-6" stroke={1.6} />
+            <div className="lg:grid lg:grid-cols-[1fr_auto] lg:items-start lg:gap-6">
+              <div className="flex items-center gap-3">
+                <div className="rounded-full bg-accent p-3">
+                  <IconHeart className="h-6 w-6" stroke={1.6} />
+                </div>
+                <div>
+                  <p className="text-sm text-muted-foreground">
+                    Quem faz tudo acontecer
+                  </p>
+                  <h3 className="text-lg font-semibold">Dona Gisele</h3>
+                </div>
+              </div>
+              <div className="mt-4 lg:mt-0 lg:row-span-2 lg:col-start-2 lg:w-56">
+                <div className="relative aspect-4/5 w-full overflow-hidden rounded-2xl border border-border bg-muted/40">
+                  <div className="absolute inset-0 grid place-items-center text-muted-foreground">
+                    <div className="flex flex-col items-center gap-2 text-xs uppercase tracking-widest">
+                      <IconPhoto className="h-6 w-6" stroke={1.6} />
+                      Foto da Dona Gisele
+                    </div>
+                  </div>
+                </div>
               </div>
               <div>
-                <p className="text-sm text-muted-foreground">
-                  Quem faz tudo acontecer
+                <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
+                  “Cada peça é pensada para contar uma história. Eu gosto de
+                  imaginar onde ela vai ficar e como vai trazer aconchego para o
+                  dia a dia.”
                 </p>
-                <h3 className="text-lg font-semibold">Dona Gisele</h3>
+                <Link
+                  href="https://www.instagram.com/ateliedagisa.l/"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="mt-6 inline-flex items-center gap-2 text-xs text-muted-foreground transition-colors hover:text-primary"
+                >
+                  <IconBrandInstagram className="h-4 w-4" stroke={1.6} />
+                  Siga o ateliê e acompanhe as novidades.
+                </Link>
               </div>
             </div>
-            <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
-              “Cada peça é pensada para contar uma história. Eu gosto de
-              imaginar onde ela vai ficar e como vai trazer aconchego para o dia
-              a dia.”
-            </p>
-            <Link
-              href="https://www.instagram.com/ateliedagisa.l/"
-              target="_blank"
-              rel="noreferrer"
-              className="mt-6 inline-flex items-center gap-2 text-xs text-muted-foreground transition-colors hover:text-primary"
-            >
-              <IconBrandInstagram className="h-4 w-4" stroke={1.6} />
-              Siga o ateliê e acompanhe as novidades.
-            </Link>
           </div>
         </div>
         <div className="mx-auto max-w-6xl px-6 pb-25">
@@ -317,11 +355,11 @@ export default function HomePage() {
             </Link>
           </div>
           <div className="grid gap-4 sm:grid-cols-3">
-            {vitrineImages.map((image) => (
+            {vitrineImages.map((image, index) => (
               <button
                 key={image.src}
                 type="button"
-                onClick={() => setSelectedImage(image)}
+                onClick={() => setSelectedIndex(index)}
                 className="group relative overflow-hidden rounded-2xl border border-border bg-background text-left shadow-sm transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-lg cursor-pointer"
               >
                 <div className="absolute inset-0 bg-black/20 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
@@ -373,7 +411,7 @@ export default function HomePage() {
         <div className="mx-auto flex max-w-6xl flex-col items-start gap-6 px-6 py-25 sm:flex-row sm:items-center sm:justify-between">
           <div className="max-w-xl">
             <div className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-muted-foreground">
-              <IconCubeSend className="h-4 w-4" stroke={1.6} />
+              <IconCubeSend className="h-8 w-8" stroke={1.6} />
               Encomendas
             </div>
             <h2 className="mt-3 text-3xl font-semibold tracking-tight">
@@ -426,27 +464,12 @@ export default function HomePage() {
         </div>
       </footer>
 
-      {selectedImage && (
-        <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/90"
-          onClick={() => setSelectedImage(null)}
-          role="presentation"
-        >
-          <div className="relative max-h-full w-full">
-            <img
-              src={selectedImage.src}
-              alt={selectedImage.alt}
-              className="max-h-[85vh] w-full rounded-2xl object-contain shadow-2xl"
-            />
-            <button
-              type="button"
-              onClick={() => setSelectedImage(null)}
-              className="absolute right-4 top-4 rounded-full bg-black/60 px-3 py-1 text-xs font-semibold text-white backdrop-blur transition hover:bg-black/80 cursor-pointer"
-            >
-              <IconX />
-            </button>
-          </div>
-        </div>
+      {selectedIndex !== null && (
+        <VitrineLightbox
+          images={vitrineImages}
+          initialIndex={selectedIndex}
+          onClose={() => setSelectedIndex(null)}
+        />
       )}
     </main>
   );
