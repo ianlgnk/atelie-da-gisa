@@ -10,7 +10,7 @@
     "lint": "eslint .",
     "format": "prettier --write .",
     "typecheck": "tsc --noEmit",
-    "checkall": "yarn lint --fix && yarn format && yarn typecheck"
+    "check:all": "yarn lint --fix && yarn format && yarn typecheck"
   },
   "dependencies": {
     "@radix-ui/react-accordion": "^1.2.12",

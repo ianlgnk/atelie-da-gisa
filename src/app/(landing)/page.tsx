@@ -26,6 +26,7 @@ import vitrine03 from "@/assets/vitrine-03.jpg";
 import vitrine04 from "@/assets/vitrine-04.jpg";
 import vitrine05 from "@/assets/vitrine-05.jpg";
 import vitrine06 from "@/assets/vitrine-06.jpg";
+import { TestimonialsCarousel } from "@/components/testimonials-carousel";
 import { VitrineLightbox } from "@/components/vitrine-lightbox";
 
 const features = [
@@ -159,7 +160,7 @@ export default function HomePage() {
   }, [selectedIndex]);
 
   return (
-    <main className="bg-background text-foreground">
+    <main className="bg-background text-foreground overflow-x-hidden">
       <section
         id="inicio"
         className="relative flex min-h-screen items-center justify-center overflow-hidden"
@@ -390,20 +391,7 @@ export default function HomePage() {
               Quem recebe, se apaixona.
             </h2>
           </div>
-          <div className="grid gap-4 sm:grid-cols-3">
-            {testimonials.map((testimonial) => (
-              <div
-                key={testimonial.name}
-                className="rounded-2xl border border-border bg-card p-5 text-sm text-muted-foreground shadow-sm"
-              >
-                <p className="leading-relaxed">“{testimonial.text}”</p>
-                <div className="mt-4 flex items-center gap-2 text-xs font-semibold uppercase tracking-wide text-foreground">
-                  <IconHeart className="h-4 w-4" stroke={1.6} />
-                  {testimonial.name}
-                </div>
-              </div>
-            ))}
-          </div>
+          <TestimonialsCarousel items={testimonials} />
         </div>
       </section>
 
