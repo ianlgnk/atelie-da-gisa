@@ -159,14 +159,23 @@ export default function SiteShell({ children }: { children: React.ReactNode }) {
           }`}
         >
           <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-3">
-            <div
-              className={`flex items-center gap-2 text-sm font-semibold ${
+            <button
+              type="button"
+              onClick={() => {
+                window.scrollTo({ top: 0, behavior: "smooth" });
+                requestAnimationFrame(() => {
+                  document.documentElement.scrollTop = 0;
+                  document.body.scrollTop = 0;
+                });
+              }}
+              className={`group flex items-center gap-2 text-sm font-semibold transition-transform hover:scale-105 cursor-pointer ${
                 isScrolled ? "text-foreground" : "text-white"
               }`}
+              aria-label="Voltar ao topo"
             >
               <IconFlower className="h-4 w-4" stroke={1.6} />
               Ateliê da Gisa
-            </div>
+            </button>
             <nav
               className={`hidden items-center gap-6 text-sm font-semibold md:flex ${
                 isScrolled ? "text-muted-foreground" : "text-white/90"

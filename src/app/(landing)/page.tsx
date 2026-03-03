@@ -163,7 +163,7 @@ export default function HomePage() {
     () => ({
       hidden: {
         opacity: 0,
-        y: shouldReduceMotion ? 0 : 18,
+        // y: shouldReduceMotion ? 0 : 18,
         scale: shouldReduceMotion ? 1 : 0.985,
         filter: shouldReduceMotion ? "none" : "blur(6px)",
       },
@@ -219,15 +219,6 @@ export default function HomePage() {
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [selectedIndex]);
-
-  React.useEffect(() => {
-    if (typeof window === "undefined") return;
-    if (window.location.hash) return;
-    if ("scrollRestoration" in window.history) {
-      window.history.scrollRestoration = "manual";
-    }
-    window.scrollTo({ top: 0, left: 0 });
-  }, []);
 
   return (
     <main className="bg-background text-foreground">
@@ -533,7 +524,7 @@ export default function HomePage() {
         viewport={viewportTight}
       >
         <motion.div
-          className="mx-auto flex max-w-6xl flex-col items-start gap-6 px-6 py-25 sm:flex-row sm:items-center sm:justify-between"
+          className="mx-auto flex max-w-6xl flex-col items-start gap-6 px-6 py-25 sm:flex-row sm:items-center sm:justify-between min-h-[80dvh]"
           variants={listVariants}
         >
           <div className="max-w-xl">
