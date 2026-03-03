@@ -20,7 +20,7 @@ type Testimonial = {
 export function TestimonialsCarousel({ items }: { items: Testimonial[] }) {
   return (
     <Carousel opts={{ align: "start", loop: true }} className="relative">
-      <CarouselContent containerClassName="py-3 touch-pan-y px-3">
+      <CarouselContent containerClassName="py-3 touch-pan-y">
         {items.map((testimonial) => (
           <CarouselItem
             key={testimonial.name}
