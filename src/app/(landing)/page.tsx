@@ -7,7 +7,6 @@ import {
   IconFlower,
   IconHandFinger,
   IconHeart,
-  IconHeartHandshake,
   IconLeaf,
   IconNeedle,
   IconPalette,
@@ -256,7 +255,7 @@ export default function HomePage() {
           />
         </div>
         <motion.div
-          className="relative mx-auto flex max-w-6xl flex-col gap-10 px-6 pt-30 pb-15"
+          className="relative mx-auto flex max-w-7xl flex-col gap-10 px-6 pt-30 pb-15"
           variants={listVariants}
         >
           <motion.div className="flex flex-col gap-4" variants={listVariants}>
@@ -323,14 +322,14 @@ export default function HomePage() {
 
       <motion.section
         id="sobre"
-        className="border-t border-border bg-card/40 space-y-15 scroll-mt-0 sm:scroll-mt-10 min-h-svh"
+        className="border-t border-border bg-card/40 space-y-15 scroll-mt-0 sm:scroll-mt-10 pb-25"
         variants={sectionVariants}
         initial="hidden"
         whileInView="show"
         viewport={viewportTight}
       >
         <motion.div
-          className="mx-auto grid max-w-6xl gap-10 px-6 pt-25 lg:grid-cols-[0.85fr_1.15fr]"
+          className="mx-auto grid max-w-7xl gap-10 px-6 pt-25 lg:grid-cols-[0.85fr_1.15fr]"
           variants={listVariants}
         >
           <motion.div className="space-y-4" variants={itemVariants}>
@@ -346,11 +345,13 @@ export default function HomePage() {
               macramês que transformam ambientes com textura, leveza e
               personalidade.
             </p>
-            <div className="flex items-center gap-3 rounded-xl border border-border bg-card px-4 py-3 text-sm text-muted-foreground">
+            <Link
+              href="/vitrine"
+              className="inline-flex items-center gap-2 rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md"
+            >
               <IconPhoto className="h-5 w-5" stroke={1.6} />
-              Quer ver o processo? Em breve teremos bastidores e fotos de cada
-              criação.
-            </div>
+              Ver peças do ateliê
+            </Link>
           </motion.div>
           <motion.div
             className="rounded-3xl border border-border bg-background p-6 shadow-sm"
@@ -397,8 +398,8 @@ export default function HomePage() {
             </div>
           </motion.div>
         </motion.div>
-        <motion.div
-          className="mx-auto max-w-6xl px-6 pb-25"
+        {/* <motion.div
+          className="mx-auto max-w-7xl px-6 pb-25"
           variants={listVariants}
         >
           <div className="mb-8 flex flex-col gap-3">
@@ -442,7 +443,7 @@ export default function HomePage() {
               );
             })}
           </motion.div>
-        </motion.div>
+        </motion.div> */}
       </motion.section>
 
       <motion.section
@@ -454,10 +455,10 @@ export default function HomePage() {
         viewport={viewportTight}
       >
         <motion.div
-          className="mx-auto max-w-6xl px-6 py-25"
+          className="mx-auto max-w-7xl px-6 py-25"
           variants={listVariants}
         >
-          <div className="mb-6 flex items-center justify-between gap-4">
+          <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <div>
               <div className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-muted-foreground">
                 <IconPhoto className="h-4 w-4" stroke={1.6} />
@@ -469,7 +470,7 @@ export default function HomePage() {
             </div>
             <Link
               href="/vitrine"
-              className="hidden items-center gap-2 text-sm font-medium text-muted-foreground hover:text-foreground sm:inline-flex"
+              className="inline-flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-foreground self-end sm:self-center"
             >
               Ver tudo
               <IconArrowRight className="h-4 w-4" />
@@ -513,7 +514,7 @@ export default function HomePage() {
         viewport={viewportTight}
       >
         <motion.div
-          className="mx-auto max-w-6xl px-6 py-25"
+          className="mx-auto max-w-7xl px-6 py-25"
           variants={listVariants}
         >
           <div className="mb-8 flex flex-col gap-3">
@@ -540,7 +541,7 @@ export default function HomePage() {
         viewport={viewportTight}
       >
         <motion.div
-          className="mx-auto flex max-w-6xl flex-col items-start gap-6 px-6 py-25 sm:flex-row sm:items-center sm:justify-between min-h-[80dvh]"
+          className="mx-auto flex max-w-7xl flex-col items-start gap-6 px-6 py-25 sm:flex-row sm:items-center sm:justify-between min-h-[80dvh]"
           variants={listVariants}
         >
           <div className="max-w-xl">
@@ -556,13 +557,15 @@ export default function HomePage() {
               reservar sua próxima criação.
             </p>
           </div>
-          <Link
-            href="/vitrine"
+          <a
+            href="https://wa.me/5533988719351?text=Oi%21%20Vim%20do%20site%20do%20Ateli%C3%AA%20da%20Gisa%20e%20quero%20fazer%20uma%20encomenda."
+            target="_blank"
+            rel="noreferrer"
             className="inline-flex items-center gap-2 rounded-md bg-primary px-5 py-2.5 text-sm font-medium text-primary-foreground shadow-sm transition-colors hover:opacity-90"
           >
             Quero encomendar
             <IconArrowRight className="h-4 w-4" />
-          </Link>
+          </a>
         </motion.div>
       </motion.section>
 
@@ -574,7 +577,7 @@ export default function HomePage() {
         viewport={{ once: false, amount: 0.45 }}
       >
         <motion.div
-          className="mx-auto flex max-w-6xl flex-col gap-6 px-6 py-10 text-sm text-muted-foreground sm:flex-row sm:items-center sm:justify-between"
+          className="mx-auto flex max-w-7xl flex-col gap-6 px-6 py-10 text-sm text-muted-foreground sm:flex-row sm:items-center sm:justify-between"
           variants={listVariants}
         >
           <div className="flex items-center gap-2">

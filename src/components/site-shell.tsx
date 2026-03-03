@@ -1,6 +1,7 @@
 "use client";
 
 import {
+  IconBrandWhatsapp,
   IconFlower,
   IconHeart,
   IconHome,
@@ -176,7 +177,7 @@ export default function SiteShell({ children }: { children: React.ReactNode }) {
               : "border-b border-transparent bg-transparent"
           }`}
         >
-          <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-3">
+          <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-3">
             <button
               type="button"
               onClick={() => {
@@ -250,6 +251,15 @@ export default function SiteShell({ children }: { children: React.ReactNode }) {
         </header>
         {children}
       </div>
+      <a
+        href="https://wa.me/5533988719351?text=Oi%21%20Vim%20do%20site%20do%20Ateli%C3%AA%20da%20Gisa%20e%20quero%20fazer%20uma%20encomenda."
+        target="_blank"
+        rel="noreferrer"
+        aria-label="Falar no WhatsApp"
+        className="fixed bottom-4 right-4 z-40 inline-flex h-11 w-11 items-center justify-center rounded-full border border-border bg-card text-muted-foreground shadow-sm transition-all duration-200 hover:border-emerald-500/60 hover:bg-emerald-500 hover:text-white"
+      >
+        <IconBrandWhatsapp className="h-5 w-5" stroke={1.6} />
+      </a>
     </SidebarProvider>
   );
 }
