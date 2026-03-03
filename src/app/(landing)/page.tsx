@@ -153,59 +153,75 @@ const testimonials = [
 
 export default function HomePage() {
   const shouldReduceMotion = useReducedMotion();
+  const [isMobile, setIsMobile] = React.useState(false);
+
+  React.useEffect(() => {
+    const mediaQuery = window.matchMedia("(max-width: 768px)");
+    const handleChange = () => setIsMobile(mediaQuery.matches);
+    handleChange();
+    mediaQuery.addEventListener("change", handleChange);
+    return () => mediaQuery.removeEventListener("change", handleChange);
+  }, []);
+
+  const reduceEffects = shouldReduceMotion || isMobile;
   const easeOut: Easing = [0.16, 1, 0.3, 1];
   const viewportSection = React.useMemo(
-    () => ({ once: false, amount: 0.55 }),
-    [],
+    () => (isMobile ? { amount: 0.35 } : { once: false, amount: 0.55 }),
+    [isMobile],
   );
-  const viewportTight = React.useMemo(() => ({ once: false, amount: 0.5 }), []);
+  const viewportTight = React.useMemo(
+    () => (isMobile ? { amount: 0.25 } : { once: false, amount: 0.5 }),
+    [isMobile],
+  );
   const sectionVariants = React.useMemo(
     () => ({
       hidden: {
         opacity: 0,
-        // y: shouldReduceMotion ? 0 : 18,
-        scale: shouldReduceMotion ? 1 : 0.985,
-        filter: shouldReduceMotion ? "none" : "blur(6px)",
+        scale: reduceEffects ? 1 : 0.985,
+        filter: reduceEffects ? "none" : "blur(6px)",
       },
       show: {
         opacity: 1,
         y: 0,
         scale: 1,
         filter: "blur(0px)",
-        transition: { duration: 0.65, ease: easeOut },
+        transition: {
+          duration: isMobile ? 0.4 : 0.65,
+          ease: easeOut,
+        },
       },
     }),
-    [easeOut, shouldReduceMotion],
+    [easeOut, isMobile, reduceEffects],
   );
   const listVariants = React.useMemo(
     () => ({
       hidden: {},
       show: {
         transition: {
-          staggerChildren: 0.12,
-          delayChildren: 0.05,
+          staggerChildren: isMobile ? 0.06 : 0.12,
+          delayChildren: isMobile ? 0 : 0.05,
         },
       },
     }),
-    [],
+    [isMobile],
   );
   const itemVariants = React.useMemo(
     () => ({
       hidden: {
         opacity: 0,
-        y: shouldReduceMotion ? 0 : 12,
-        scale: shouldReduceMotion ? 1 : 0.98,
-        filter: shouldReduceMotion ? "none" : "blur(4px)",
+        y: reduceEffects ? 0 : 12,
+        scale: reduceEffects ? 1 : 0.98,
+        filter: reduceEffects ? "none" : "blur(4px)",
       },
       show: {
         opacity: 1,
         y: 0,
         scale: 1,
         filter: "blur(0px)",
-        transition: { duration: 0.5, ease: easeOut },
+        transition: { duration: isMobile ? 0.35 : 0.5, ease: easeOut },
       },
     }),
-    [easeOut, shouldReduceMotion],
+    [easeOut, isMobile, reduceEffects],
   );
   const [selectedIndex, setSelectedIndex] = React.useState<number | null>(null);
 

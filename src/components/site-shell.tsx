@@ -109,24 +109,42 @@ export default function SiteShell({ children }: { children: React.ReactNode }) {
     const sections = getSections();
     if (sections.length === 0) return;
 
-    const updateActive = () => {
-      const headerOffset = (headerRef.current?.offsetHeight ?? 72) + 8;
-      const scrollPos = window.scrollY + headerOffset;
-      let current = sections[0];
+    const visibility = new Map<string, number>();
+    const handleEntries = (entries: IntersectionObserverEntry[]) => {
+      for (const entry of entries) {
+        const id = `#${(entry.target as HTMLElement).id}`;
+        visibility.set(id, entry.isIntersecting ? entry.intersectionRatio : 0);
+      }
+
+      let best = sections[0];
+      let bestRatio = -1;
       for (const section of sections) {
-        if (section.offsetTop <= scrollPos) {
-          current = section;
+        const ratio = visibility.get(`#${section.id}`) ?? 0;
+        if (ratio > bestRatio) {
+          best = section;
+          bestRatio = ratio;
         }
       }
-      setActiveHash(`#${current.id}`);
+      setActiveHash(`#${best.id}`);
     };
 
-    updateActive();
-    window.addEventListener("scroll", updateActive, { passive: true });
-    window.addEventListener("resize", updateActive);
+    let observer: IntersectionObserver | null = null;
+    const createObserver = () => {
+      observer?.disconnect();
+      const headerOffset = (headerRef.current?.offsetHeight ?? 72) + 8;
+      observer = new IntersectionObserver(handleEntries, {
+        root: null,
+        rootMargin: `-${headerOffset}px 0px -55% 0px`,
+        threshold: [0, 0.1, 0.25, 0.5, 0.75, 1],
+      });
+      sections.forEach((section) => observer?.observe(section));
+    };
+
+    createObserver();
+    window.addEventListener("resize", createObserver);
     return () => {
-      window.removeEventListener("scroll", updateActive);
-      window.removeEventListener("resize", updateActive);
+      observer?.disconnect();
+      window.removeEventListener("resize", createObserver);
     };
   }, []);
 
