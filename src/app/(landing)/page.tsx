@@ -15,10 +15,15 @@ import {
   IconSparkles,
   IconStars,
 } from "@tabler/icons-react";
+import {
+  AnimatePresence,
+  type Easing,
+  motion,
+  useReducedMotion,
+} from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
-import { AnimatePresence } from "framer-motion";
 
 import heroImage from "@/assets/hero.jpg";
 import vitrine01 from "@/assets/vitrine-01.jpg";
@@ -147,6 +152,61 @@ const testimonials = [
 ];
 
 export default function HomePage() {
+  const shouldReduceMotion = useReducedMotion();
+  const easeOut: Easing = [0.16, 1, 0.3, 1];
+  const viewportSection = React.useMemo(
+    () => ({ once: false, amount: 0.55 }),
+    [],
+  );
+  const viewportTight = React.useMemo(() => ({ once: false, amount: 0.5 }), []);
+  const sectionVariants = React.useMemo(
+    () => ({
+      hidden: {
+        opacity: 0,
+        y: shouldReduceMotion ? 0 : 18,
+        scale: shouldReduceMotion ? 1 : 0.985,
+        filter: shouldReduceMotion ? "none" : "blur(6px)",
+      },
+      show: {
+        opacity: 1,
+        y: 0,
+        scale: 1,
+        filter: "blur(0px)",
+        transition: { duration: 0.65, ease: easeOut },
+      },
+    }),
+    [easeOut, shouldReduceMotion],
+  );
+  const listVariants = React.useMemo(
+    () => ({
+      hidden: {},
+      show: {
+        transition: {
+          staggerChildren: 0.12,
+          delayChildren: 0.05,
+        },
+      },
+    }),
+    [],
+  );
+  const itemVariants = React.useMemo(
+    () => ({
+      hidden: {
+        opacity: 0,
+        y: shouldReduceMotion ? 0 : 12,
+        scale: shouldReduceMotion ? 1 : 0.98,
+        filter: shouldReduceMotion ? "none" : "blur(4px)",
+      },
+      show: {
+        opacity: 1,
+        y: 0,
+        scale: 1,
+        filter: "blur(0px)",
+        transition: { duration: 0.5, ease: easeOut },
+      },
+    }),
+    [easeOut, shouldReduceMotion],
+  );
   const [selectedIndex, setSelectedIndex] = React.useState<number | null>(null);
 
   React.useEffect(() => {
@@ -160,11 +220,24 @@ export default function HomePage() {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [selectedIndex]);
 
+  React.useEffect(() => {
+    if (typeof window === "undefined") return;
+    if (window.location.hash) return;
+    if ("scrollRestoration" in window.history) {
+      window.history.scrollRestoration = "manual";
+    }
+    window.scrollTo({ top: 0, left: 0 });
+  }, []);
+
   return (
-    <main className="bg-background text-foreground overflow-x-hidden">
-      <section
+    <main className="bg-background text-foreground">
+      <motion.section
         id="inicio"
-        className="relative flex min-h-screen items-center justify-center overflow-hidden"
+        className="relative flex min-h-screen scroll-mt-100 items-center justify-center"
+        variants={sectionVariants}
+        initial="hidden"
+        whileInView="show"
+        viewport={viewportSection}
       >
         <div className="absolute inset-0">
           <Image
@@ -175,17 +248,29 @@ export default function HomePage() {
             className="object-cover"
           />
         </div>
-        <div className="relative mx-auto flex max-w-6xl flex-col gap-10 px-6 pt-30 pb-15">
-          <div className="flex flex-col gap-4">
-            <h1 className="text-4xl font-semibold leading-tight tracking-tight sm:text-5xl text-white">
+        <motion.div
+          className="relative mx-auto flex max-w-6xl flex-col gap-10 px-6 pt-30 pb-15"
+          variants={listVariants}
+        >
+          <motion.div className="flex flex-col gap-4" variants={listVariants}>
+            <motion.h1
+              className="text-4xl font-semibold leading-tight tracking-tight sm:text-5xl text-white"
+              variants={itemVariants}
+            >
               Peças de macramê que trazem calma, beleza e afeto para o seu lar.
-            </h1>
-            <p className="max-w-2xl text-base leading-relaxed sm:text-lg text-white">
+            </motion.h1>
+            <motion.p
+              className="max-w-2xl text-base leading-relaxed sm:text-lg text-white"
+              variants={itemVariants}
+            >
               No coração do ateliê, Dona Gisele transforma fios em arte. Cada
               peça é feita com tempo e carinho, para quem valoriza o artesanal e
               o aconchego.
-            </p>
-            <div className="flex flex-wrap gap-3">
+            </motion.p>
+            <motion.div
+              className="flex flex-wrap gap-3"
+              variants={itemVariants}
+            >
               <Link
                 href="/vitrine"
                 className="inline-flex items-center gap-2 rounded-md bg-primary px-5 py-2.5 text-sm font-medium text-primary-foreground shadow-sm transition-colors hover:opacity-90"
@@ -200,8 +285,8 @@ export default function HomePage() {
                 Conheça o ateliê
                 <IconStars className="h-4 w-4" />
               </Link>
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
           {/* <div className="grid gap-4 sm:grid-cols-3">
             {features.map((feature) => {
               const Icon = feature.icon;
@@ -226,15 +311,22 @@ export default function HomePage() {
               );
             })}
           </div> */}
-        </div>
-      </section>
+        </motion.div>
+      </motion.section>
 
-      <section
+      <motion.section
         id="sobre"
-        className="border-t border-border bg-card/40 space-y-15"
+        className="border-t border-border bg-card/40 space-y-15 scroll-mt-10"
+        variants={sectionVariants}
+        initial="hidden"
+        whileInView="show"
+        viewport={viewportTight}
       >
-        <div className="mx-auto grid max-w-6xl gap-10 px-6 pt-25 lg:grid-cols-[0.85fr_1.15fr]">
-          <div className="space-y-4">
+        <motion.div
+          className="mx-auto grid max-w-6xl gap-10 px-6 pt-25 lg:grid-cols-[0.85fr_1.15fr]"
+          variants={listVariants}
+        >
+          <motion.div className="space-y-4" variants={itemVariants}>
             <div className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-muted-foreground">
               <IconSparkles className="h-4 w-4" stroke={1.6} />
               Sobre o ateliê
@@ -252,8 +344,11 @@ export default function HomePage() {
               Quer ver o processo? Em breve teremos bastidores e fotos de cada
               criação.
             </div>
-          </div>
-          <div className="rounded-3xl border border-border bg-background p-6 shadow-sm">
+          </motion.div>
+          <motion.div
+            className="rounded-3xl border border-border bg-background p-6 shadow-sm"
+            variants={itemVariants}
+          >
             <div className="lg:grid lg:grid-cols-[1fr_auto] lg:items-start lg:gap-6">
               <div className="flex items-center gap-3">
                 <div className="rounded-full bg-accent p-3">
@@ -293,9 +388,12 @@ export default function HomePage() {
                 </Link>
               </div>
             </div>
-          </div>
-        </div>
-        <div className="mx-auto max-w-6xl px-6 pb-25">
+          </motion.div>
+        </motion.div>
+        <motion.div
+          className="mx-auto max-w-6xl px-6 pb-25"
+          variants={listVariants}
+        >
           <div className="mb-8 flex flex-col gap-3">
             <div className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-muted-foreground">
               <IconHeartHandshake className="h-4 w-4" stroke={1.6} />
@@ -309,13 +407,17 @@ export default function HomePage() {
               etapa.
             </p>
           </div>
-          <div className="grid gap-4 sm:grid-cols-3">
+          <motion.div
+            className="grid gap-4 sm:grid-cols-3"
+            variants={listVariants}
+          >
             {steps.map((step) => {
               const Icon = step.icon;
               return (
-                <div
+                <motion.div
                   key={step.title}
                   className="group relative rounded-2xl border border-border bg-card p-5 text-foreground shadow-sm transition-all duration-300 ease-out hover:-translate-y-1 hover:bg-foreground hover:text-background hover:shadow-lg"
+                  variants={itemVariants}
                 >
                   <div className="mb-3 inline-flex h-10 w-10 items-center justify-center rounded-full bg-accent transition-colors duration-300 group-hover:bg-background/20">
                     <Icon
@@ -329,15 +431,25 @@ export default function HomePage() {
                   <p className="mt-2 text-sm leading-relaxed text-muted-foreground transition-colors duration-300 group-hover:text-background/80">
                     {step.description}
                   </p>
-                </div>
+                </motion.div>
               );
             })}
-          </div>
-        </div>
-      </section>
+          </motion.div>
+        </motion.div>
+      </motion.section>
 
-      <section id="vitrine" className="border-t border-border bg-card/40">
-        <div className="mx-auto max-w-6xl px-6 py-25">
+      <motion.section
+        id="vitrine"
+        className="border-t border-border bg-card/40 scroll-mt-10"
+        variants={sectionVariants}
+        initial="hidden"
+        whileInView="show"
+        viewport={viewportTight}
+      >
+        <motion.div
+          className="mx-auto max-w-6xl px-6 py-25"
+          variants={listVariants}
+        >
           <div className="mb-6 flex items-center justify-between gap-4">
             <div>
               <div className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-muted-foreground">
@@ -356,13 +468,17 @@ export default function HomePage() {
               <IconArrowRight className="h-4 w-4" />
             </Link>
           </div>
-          <div className="grid gap-4 sm:grid-cols-3">
+          <motion.div
+            className="grid gap-4 sm:grid-cols-3"
+            variants={listVariants}
+          >
             {vitrineImages.map((image, index) => (
-              <button
+              <motion.button
                 key={image.src}
                 type="button"
                 onClick={() => setSelectedIndex(index)}
                 className="group relative overflow-hidden rounded-2xl border border-border bg-background text-left shadow-sm transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-lg cursor-pointer"
+                variants={itemVariants}
               >
                 <div className="absolute inset-0 bg-black/20 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
                 <img
@@ -375,14 +491,24 @@ export default function HomePage() {
                   <IconFlower className="h-4 w-4" stroke={1.6} />
                   {image.alt}
                 </div>
-              </button>
+              </motion.button>
             ))}
-          </div>
-        </div>
-      </section>
+          </motion.div>
+        </motion.div>
+      </motion.section>
 
-      <section id="depoimentos" className="border-t border-border bg-card/40">
-        <div className="mx-auto max-w-6xl px-6 py-25">
+      <motion.section
+        id="depoimentos"
+        className="border-t border-border bg-card/40 scroll-mt-10"
+        variants={sectionVariants}
+        initial="hidden"
+        whileInView="show"
+        viewport={viewportTight}
+      >
+        <motion.div
+          className="mx-auto max-w-6xl px-6 py-25"
+          variants={listVariants}
+        >
           <div className="mb-8 flex flex-col gap-3">
             <div className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-muted-foreground">
               <IconStars className="h-4 w-4" stroke={1.6} />
@@ -392,12 +518,24 @@ export default function HomePage() {
               Quem recebe, se apaixona.
             </h2>
           </div>
-          <TestimonialsCarousel items={testimonials} />
-        </div>
-      </section>
+          <motion.div variants={itemVariants}>
+            <TestimonialsCarousel items={testimonials} />
+          </motion.div>
+        </motion.div>
+      </motion.section>
 
-      <section id="encomendas" className="border-t border-border bg-card/40">
-        <div className="mx-auto flex max-w-6xl flex-col items-start gap-6 px-6 py-25 sm:flex-row sm:items-center sm:justify-between">
+      <motion.section
+        id="encomendas"
+        className="border-t border-border bg-card/40 scroll-mt-10"
+        variants={sectionVariants}
+        initial="hidden"
+        whileInView="show"
+        viewport={viewportTight}
+      >
+        <motion.div
+          className="mx-auto flex max-w-6xl flex-col items-start gap-6 px-6 py-25 sm:flex-row sm:items-center sm:justify-between"
+          variants={listVariants}
+        >
           <div className="max-w-xl">
             <div className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-muted-foreground">
               <IconCubeSend className="h-8 w-8" stroke={1.6} />
@@ -418,11 +556,20 @@ export default function HomePage() {
             Quero encomendar
             <IconArrowRight className="h-4 w-4" />
           </Link>
-        </div>
-      </section>
+        </motion.div>
+      </motion.section>
 
-      <footer className="border-t border-border bg-background">
-        <div className="mx-auto flex max-w-6xl flex-col gap-6 px-6 py-10 text-sm text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
+      <motion.footer
+        className="border-t border-border bg-background"
+        variants={sectionVariants}
+        initial="hidden"
+        whileInView="show"
+        viewport={{ once: false, amount: 0.45 }}
+      >
+        <motion.div
+          className="mx-auto flex max-w-6xl flex-col gap-6 px-6 py-10 text-sm text-muted-foreground sm:flex-row sm:items-center sm:justify-between"
+          variants={listVariants}
+        >
           <div className="flex items-center gap-2">
             <IconFlower className="h-4 w-4" stroke={1.6} />
             Ateliê da Gisa · Macramê artesanal
@@ -450,8 +597,8 @@ export default function HomePage() {
               Feito com carinho
             </span>
           </div>
-        </div>
-      </footer>
+        </motion.div>
+      </motion.footer>
 
       <AnimatePresence>
         {selectedIndex !== null && (

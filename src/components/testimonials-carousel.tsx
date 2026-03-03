@@ -1,7 +1,7 @@
 "use client";
 
 import { IconHeart } from "@tabler/icons-react";
-import { motion } from "framer-motion";
+import { type Easing, motion } from "framer-motion";
 import * as React from "react";
 
 import {
@@ -18,6 +18,7 @@ type Testimonial = {
 };
 
 export function TestimonialsCarousel({ items }: { items: Testimonial[] }) {
+  const easeInOut: Easing = [0.42, 0, 0.58, 1];
   return (
     <Carousel opts={{ align: "start", loop: true }} className="relative">
       <CarouselContent containerClassName="py-3 touch-pan-y">
@@ -39,7 +40,7 @@ export function TestimonialsCarousel({ items }: { items: Testimonial[] }) {
                     rest: { scale: 1 },
                     hover: {
                       scale: [1, 1.25, 1],
-                      transition: { duration: 0.6, ease: "easeInOut" },
+                      transition: { duration: 0.6, ease: easeInOut },
                     },
                   }}
                   className="inline-flex"

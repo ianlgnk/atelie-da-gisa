@@ -8,21 +8,26 @@ import {
   IconRosette,
   IconSparkles,
 } from "@tabler/icons-react";
-import { motion } from "framer-motion";
+import { type Easing, motion } from "framer-motion";
 import Link from "next/link";
 
+const easeOut: Easing = [0.16, 1, 0.3, 1];
 const containerVariants = {
   hidden: { opacity: 0, scale: 0.98 },
   show: {
     opacity: 1,
     scale: 1,
-    transition: { duration: 0.6, ease: "easeOut", staggerChildren: 0.08 },
+    transition: { duration: 0.6, ease: easeOut, staggerChildren: 0.08 },
   },
 };
 
 const itemVariants = {
   hidden: { opacity: 0, scale: 0.98 },
-  show: { opacity: 1, scale: 1, transition: { duration: 0.5, ease: "easeOut" } },
+  show: {
+    opacity: 1,
+    scale: 1,
+    transition: { duration: 0.5, ease: easeOut },
+  },
 };
 const listVariants = {
   hidden: {},
@@ -117,8 +122,8 @@ export default function NotFound() {
       >
         <motion.div variants={itemVariants}>
           <Link
-          href="/"
-          className="inline-flex items-center justify-center gap-2 rounded-md bg-primary px-5 py-2.5 text-sm font-medium text-primary-foreground shadow-sm transition-all ease-linear hover:opacity-90"
+            href="/"
+            className="inline-flex items-center justify-center gap-2 rounded-md bg-primary px-5 py-2.5 text-sm font-medium text-primary-foreground shadow-sm transition-all ease-linear hover:opacity-90"
           >
             <IconArrowLeft {...iconProps} />
             Ir para a página inicial
@@ -126,8 +131,8 @@ export default function NotFound() {
         </motion.div>
         <motion.div variants={itemVariants}>
           <Link
-          href="/vitrine"
-          className="inline-flex items-center justify-center gap-2 rounded-md border border-border bg-card px-5 py-2.5 text-sm font-medium text-foreground shadow-sm transition-all ease-linear hover:bg-accent"
+            href="/vitrine"
+            className="inline-flex items-center justify-center gap-2 rounded-md border border-border bg-card px-5 py-2.5 text-sm font-medium text-foreground shadow-sm transition-all ease-linear hover:bg-accent"
           >
             Ver a vitrine
             <IconArrowRight {...iconProps} />

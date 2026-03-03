@@ -1,7 +1,7 @@
 "use client";
 
 import { IconChevronLeft, IconChevronRight, IconX } from "@tabler/icons-react";
-import { motion } from "framer-motion";
+import { type Easing, motion } from "framer-motion";
 import * as React from "react";
 
 import {
@@ -27,6 +27,7 @@ export function VitrineLightbox({
 }) {
   const [index, setIndex] = React.useState(initialIndex);
   const [api, setApi] = React.useState<CarouselApi | null>(null);
+  const easeOut: Easing = [0.16, 1, 0.3, 1];
 
   React.useEffect(() => {
     setIndex(initialIndex);
@@ -93,7 +94,7 @@ export function VitrineLightbox({
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      transition={{ duration: 0.25, ease: "easeOut" }}
+      transition={{ duration: 0.25, ease: easeOut }}
     >
       <button
         type="button"
@@ -114,7 +115,7 @@ export function VitrineLightbox({
         initial={{ scale: 0.98, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
         exit={{ scale: 0.98, opacity: 0 }}
-        transition={{ duration: 0.3, ease: "easeOut" }}
+        transition={{ duration: 0.3, ease: easeOut }}
       >
         <Carousel
           opts={{ align: "center", loop: true }}
