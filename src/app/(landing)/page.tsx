@@ -166,11 +166,11 @@ export default function HomePage() {
   const reduceEffects = shouldReduceMotion || isMobile;
   const easeOut: Easing = [0.16, 1, 0.3, 1];
   const viewportSection = React.useMemo(
-    () => (isMobile ? { amount: 0.35 } : { once: false, amount: 0.55 }),
+    () => (isMobile ? { amount: 0.15 } : { amount: 0.35 }),
     [isMobile],
   );
   const viewportTight = React.useMemo(
-    () => (isMobile ? { amount: 0.25 } : { once: false, amount: 0.5 }),
+    () => (isMobile ? { amount: 0.05 } : { amount: 0.3 }),
     [isMobile],
   );
   const sectionVariants = React.useMemo(
@@ -240,7 +240,7 @@ export default function HomePage() {
     <main className="bg-background text-foreground">
       <motion.section
         id="inicio"
-        className="relative flex min-h-screen scroll-mt-100 items-center justify-center"
+        className="relative flex min-h-svh scroll-mt-0 sm:scroll-mt-10 items-center justify-center"
         variants={sectionVariants}
         initial="hidden"
         whileInView="show"
@@ -323,7 +323,7 @@ export default function HomePage() {
 
       <motion.section
         id="sobre"
-        className="border-t border-border bg-card/40 space-y-15 scroll-mt-10"
+        className="border-t border-border bg-card/40 space-y-15 scroll-mt-0 sm:scroll-mt-10 min-h-svh"
         variants={sectionVariants}
         initial="hidden"
         whileInView="show"
@@ -447,7 +447,7 @@ export default function HomePage() {
 
       <motion.section
         id="vitrine"
-        className="border-t border-border bg-card/40 scroll-mt-10"
+        className="border-t border-border bg-card scroll-mt-0 sm:scroll-mt-10"
         variants={sectionVariants}
         initial="hidden"
         whileInView="show"
@@ -506,7 +506,7 @@ export default function HomePage() {
 
       <motion.section
         id="depoimentos"
-        className="border-t border-border bg-card/40 scroll-mt-10"
+        className="border-t border-border bg-card scroll-mt-0 sm:scroll-mt-10"
         variants={sectionVariants}
         initial="hidden"
         whileInView="show"
@@ -533,7 +533,7 @@ export default function HomePage() {
 
       <motion.section
         id="encomendas"
-        className="border-t border-border bg-card/40 scroll-mt-10"
+        className="border-t border-border bg-card scroll-mt-0 sm:scroll-mt-10"
         variants={sectionVariants}
         initial="hidden"
         whileInView="show"

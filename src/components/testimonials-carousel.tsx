@@ -57,7 +57,7 @@ export function TestimonialsCarousel({ items }: { items: Testimonial[] }) {
         ))}
       </CarouselContent>
 
-      <div className="mt-2 hidden items-center justify-end gap-2 lg:flex">
+      <div className="mt-2 flex items-center justify-end gap-2">
         <CarouselPrevious className="static translate-y-0" />
         <CarouselNext className="static translate-y-0" />
       </div>
