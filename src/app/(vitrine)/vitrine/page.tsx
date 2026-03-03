@@ -10,7 +10,7 @@ import {
   IconSparkles,
   IconSun,
 } from "@tabler/icons-react";
-import { AnimatePresence } from "framer-motion";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import { useTheme } from "next-themes";
@@ -98,12 +98,77 @@ export default function VitrinePage() {
   const [selectedIndex, setSelectedIndex] = React.useState<number | null>(null);
   const { theme, resolvedTheme, setTheme } = useTheme();
   const isDark = (resolvedTheme ?? theme) === "dark";
+  const [isMobile, setIsMobile] = React.useState(false);
+  const shouldReduceMotion = useReducedMotion();
+
+  React.useEffect(() => {
+    const mediaQuery = window.matchMedia("(max-width: 768px)");
+    const handleChange = () => setIsMobile(mediaQuery.matches);
+    handleChange();
+    mediaQuery.addEventListener("change", handleChange);
+    return () => mediaQuery.removeEventListener("change", handleChange);
+  }, []);
+
+  const fadeUp = React.useMemo(
+    () => ({
+      hidden: { opacity: 0, y: shouldReduceMotion || isMobile ? 0 : 8 },
+      show: {
+        opacity: 1,
+        y: 0,
+        transition: { duration: isMobile ? 0.28 : 0.45, ease: [0.16, 1, 0.3, 1] },
+      },
+    }),
+    [shouldReduceMotion, isMobile],
+  );
+  const fadeLeft = React.useMemo(
+    () => ({
+      hidden: { opacity: 0, x: shouldReduceMotion || isMobile ? 0 : -10 },
+      show: {
+        opacity: 1,
+        x: 0,
+        transition: { duration: isMobile ? 0.28 : 0.45, ease: [0.16, 1, 0.3, 1] },
+      },
+    }),
+    [shouldReduceMotion, isMobile],
+  );
+  const fadeRight = React.useMemo(
+    () => ({
+      hidden: { opacity: 0, x: shouldReduceMotion || isMobile ? 0 : 10 },
+      show: {
+        opacity: 1,
+        x: 0,
+        transition: { duration: isMobile ? 0.28 : 0.45, ease: [0.16, 1, 0.3, 1] },
+      },
+    }),
+    [shouldReduceMotion, isMobile],
+  );
+  const gridItem = React.useMemo(
+    () => ({
+      hidden: {
+        opacity: 0,
+        scale: shouldReduceMotion || isMobile ? 1 : 0.985,
+        filter: shouldReduceMotion || isMobile ? "none" : "blur(6px)",
+      },
+      show: {
+        opacity: 1,
+        scale: 1,
+        filter: "blur(0px)",
+        transition: { duration: isMobile ? 0.3 : 0.5, ease: [0.16, 1, 0.3, 1] },
+      },
+    }),
+    [shouldReduceMotion, isMobile],
+  );
   return (
     <main className="min-h-svh bg-background text-foreground">
       <header className="relative overflow-hidden border-b border-border bg-background/90 backdrop-blur">
         <div className="pointer-events-none absolute inset-0" />
         <div className="mx-auto flex max-w-7xl flex-col gap-6 px-6 py-10">
-          <div className="flex flex-wrap items-center justify-between gap-4">
+          <motion.div
+            className="flex flex-wrap items-center justify-between gap-4"
+            variants={fadeLeft}
+            initial="hidden"
+            animate="show"
+          >
             <div>
               <div className="flex flex-wrap items-center gap-2">
                 <div className="inline-flex items-center gap-2 rounded-full border border-border bg-card/70 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.3em] text-muted-foreground">
@@ -123,7 +188,7 @@ export default function VitrinePage() {
                   )}
                 </button>
               </div>
-              <h1 className="mt-3 flex items-center gap-3 text-3xl font-semibold tracking-tight sm:text-4xl">
+              <h1 className="mt-3 flex flex-wrap items-center gap-3 text-3xl font-semibold tracking-tight sm:text-4xl">
                 Galeria completa
                 <span className="inline-flex items-center gap-1 rounded-full border border-border bg-card/70 px-2 py-1 text-xs font-semibold text-muted-foreground">
                   <IconPhoto className="h-3.5 w-3.5" />
@@ -133,26 +198,36 @@ export default function VitrinePage() {
             </div>
             <Link
               href="/"
-              className="inline-flex items-center gap-2 rounded-full border border-primary bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground shadow-md transition-transform duration-200 hover:-translate-y-0.5 hover:opacity-90"
+              className="ml-auto inline-flex items-center gap-2 rounded-full border border-primary bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground shadow-md transition-transform duration-200 hover:-translate-y-0.5 hover:opacity-90"
             >
               <IconChevronLeft className="h-4 w-4" />
               Voltar ao início
             </Link>
-          </div>
-          <div className="flex flex-wrap items-center gap-3 text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground">
-            <span className="inline-flex items-center gap-2 rounded-full border border-border bg-card/70 px-3 py-1">
+          </motion.div>
+          <motion.div
+            className="flex flex-wrap items-center gap-3 text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground"
+            variants={fadeRight}
+            initial="hidden"
+            animate="show"
+          >
+            <span className="inline-flex items-center gap-2 rounded-full border border-emerald-200/70 bg-emerald-50 px-3 py-1 text-emerald-700 dark:border-emerald-900/60 dark:bg-emerald-950/40 dark:text-emerald-200">
               <IconLeaf className="h-3.5 w-3.5" />
               Fibras naturais
             </span>
-            <span className="inline-flex items-center gap-2 rounded-full border border-border bg-card/70 px-3 py-1">
+            <span className="inline-flex items-center gap-2 rounded-full border border-rose-200/70 bg-rose-50 px-3 py-1 text-rose-700 dark:border-rose-900/60 dark:bg-rose-950/40 dark:text-rose-200">
               <IconHeart className="h-3.5 w-3.5" />
               Feito com carinho
             </span>
-          </div>
-          <p className="max-w-2xl text-sm text-muted-foreground sm:text-base">
+          </motion.div>
+          <motion.p
+            className="max-w-2xl text-sm text-muted-foreground sm:text-base"
+            variants={fadeUp}
+            initial="hidden"
+            animate="show"
+          >
             Uma seleção ampla de peças e detalhes do ateliê. Esta coleção é
             provisória, mas já mostra texturas, padrões e variações.
-          </p>
+          </motion.p>
         </div>
       </header>
 
@@ -194,11 +269,15 @@ export default function VitrinePage() {
         </div>
         <div className="columns-1 gap-4 sm:columns-2 md:columns-3 lg:columns-4">
           {gallery.map((item, index) => (
-            <button
+            <motion.button
               key={`${item.alt}-${index}`}
               type="button"
               onClick={() => setSelectedIndex(index)}
               className="group mb-4 block w-full cursor-pointer overflow-hidden rounded-2xl border border-border bg-card shadow-sm transition-transform duration-200 hover:scale-[1.01] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40"
+              variants={gridItem}
+              initial="hidden"
+              whileInView="show"
+              viewport={{ once: true, amount: isMobile ? 0.3 : 0.55 }}
             >
               <div className={`relative w-full ${item.ratio}`}>
                 <Image
@@ -212,7 +291,7 @@ export default function VitrinePage() {
               <div className="border-t border-border px-3 py-2 text-[11px] font-medium uppercase tracking-[0.18em] text-muted-foreground sm:px-4 sm:py-3 sm:text-xs">
                 {item.alt}
               </div>
-            </button>
+            </motion.button>
           ))}
         </div>
       </section>
