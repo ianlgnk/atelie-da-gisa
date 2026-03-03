@@ -10,7 +10,12 @@ import {
   IconSparkles,
   IconSun,
 } from "@tabler/icons-react";
-import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import {
+  AnimatePresence,
+  type Easing,
+  motion,
+  useReducedMotion,
+} from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import { useTheme } from "next-themes";
@@ -100,6 +105,7 @@ export default function VitrinePage() {
   const isDark = (resolvedTheme ?? theme) === "dark";
   const [isMobile, setIsMobile] = React.useState(false);
   const shouldReduceMotion = useReducedMotion();
+  const easeOut: Easing = [0.16, 1, 0.3, 1];
 
   React.useEffect(() => {
     const mediaQuery = window.matchMedia("(max-width: 768px)");
@@ -115,10 +121,13 @@ export default function VitrinePage() {
       show: {
         opacity: 1,
         y: 0,
-        transition: { duration: isMobile ? 0.28 : 0.45, ease: [0.16, 1, 0.3, 1] },
+        transition: {
+          duration: isMobile ? 0.28 : 0.45,
+          ease: easeOut,
+        },
       },
     }),
-    [shouldReduceMotion, isMobile],
+    [shouldReduceMotion, isMobile, easeOut],
   );
   const fadeLeft = React.useMemo(
     () => ({
@@ -126,10 +135,13 @@ export default function VitrinePage() {
       show: {
         opacity: 1,
         x: 0,
-        transition: { duration: isMobile ? 0.28 : 0.45, ease: [0.16, 1, 0.3, 1] },
+        transition: {
+          duration: isMobile ? 0.28 : 0.45,
+          ease: easeOut,
+        },
       },
     }),
-    [shouldReduceMotion, isMobile],
+    [shouldReduceMotion, isMobile, easeOut],
   );
   const fadeRight = React.useMemo(
     () => ({
@@ -137,10 +149,13 @@ export default function VitrinePage() {
       show: {
         opacity: 1,
         x: 0,
-        transition: { duration: isMobile ? 0.28 : 0.45, ease: [0.16, 1, 0.3, 1] },
+        transition: {
+          duration: isMobile ? 0.28 : 0.45,
+          ease: easeOut,
+        },
       },
     }),
-    [shouldReduceMotion, isMobile],
+    [shouldReduceMotion, isMobile, easeOut],
   );
   const gridItem = React.useMemo(
     () => ({
@@ -153,10 +168,10 @@ export default function VitrinePage() {
         opacity: 1,
         scale: 1,
         filter: "blur(0px)",
-        transition: { duration: isMobile ? 0.3 : 0.5, ease: [0.16, 1, 0.3, 1] },
+        transition: { duration: isMobile ? 0.3 : 0.5, ease: easeOut },
       },
     }),
-    [shouldReduceMotion, isMobile],
+    [shouldReduceMotion, isMobile, easeOut],
   );
   return (
     <main className="min-h-svh bg-background text-foreground">

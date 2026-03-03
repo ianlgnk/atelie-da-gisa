@@ -29,7 +29,8 @@ out
 *.pem
 
 # Firebase
-.firebase
+.firebase*
+
 
 # TypeScript
 *.tsbuildinfo
