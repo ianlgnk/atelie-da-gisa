@@ -1,7 +1,15 @@
 "use client";
 
 import { IconChevronLeft, IconChevronRight, IconX } from "@tabler/icons-react";
+import { motion } from "framer-motion";
 import * as React from "react";
+
+import {
+  Carousel,
+  type CarouselApi,
+  CarouselContent,
+  CarouselItem,
+} from "@/components/ui/carousel";
 
 type VitrineImage = {
   src: string;
@@ -18,8 +26,7 @@ export function VitrineLightbox({
   onClose: () => void;
 }) {
   const [index, setIndex] = React.useState(initialIndex);
-  const touchStartX = React.useRef<number | null>(null);
-  const touchStartY = React.useRef<number | null>(null);
+  const [api, setApi] = React.useState<CarouselApi | null>(null);
 
   React.useEffect(() => {
     setIndex(initialIndex);
@@ -42,37 +49,51 @@ export function VitrineLightbox({
 
   if (images.length === 0) return null;
 
-  const current = images[index];
   const total = images.length;
 
-  const goPrev = React.useCallback(() => {
-    setIndex((prev) => (prev - 1 + total) % total);
-  }, [total]);
+  React.useEffect(() => {
+    if (!api) return;
+    const onSelect = () => setIndex(api.selectedScrollSnap());
+    onSelect();
+    api.on("select", onSelect);
+    return () => {
+      api.off("select", onSelect);
+    };
+  }, [api]);
 
-  const goNext = React.useCallback(() => {
-    setIndex((prev) => (prev + 1) % total);
-  }, [total]);
+  React.useEffect(() => {
+    if (!api) return;
+    api.scrollTo(initialIndex, true);
+  }, [api, initialIndex]);
 
   React.useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        event.preventDefault();
+        onClose();
+      }
       if (event.key === "ArrowLeft") {
         event.preventDefault();
-        goPrev();
+        api?.scrollPrev();
       }
       if (event.key === "ArrowRight") {
         event.preventDefault();
-        goNext();
+        api?.scrollNext();
       }
     };
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [goNext, goPrev]);
+  }, [api, onClose]);
 
   return (
-    <div
+    <motion.div
       className="fixed inset-0 z-50 flex items-center justify-center bg-black/90"
       onClick={onClose}
       role="presentation"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.25, ease: "easeOut" }}
     >
       <button
         type="button"
@@ -86,39 +107,33 @@ export function VitrineLightbox({
         <IconX />
       </button>
 
-      <div
-        className="relative max-h-[85vh] max-w-[95vw]"
+      <motion.div
+        className="relative w-full max-w-[95vw]"
         onClick={(event) => event.stopPropagation()}
-        onTouchStart={(event) => {
-          const touch = event.touches[0];
-          touchStartX.current = touch?.clientX ?? null;
-          touchStartY.current = touch?.clientY ?? null;
-        }}
-        onTouchEnd={(event) => {
-          const startX = touchStartX.current;
-          const startY = touchStartY.current;
-          if (startX === null || startY === null) return;
-          const touch = event.changedTouches[0];
-          if (!touch) return;
-          const deltaX = touch.clientX - startX;
-          const deltaY = touch.clientY - startY;
-          const isHorizontalSwipe =
-            Math.abs(deltaX) > 40 && Math.abs(deltaX) > Math.abs(deltaY);
-          if (!isHorizontalSwipe) return;
-          if (deltaX > 0) {
-            goPrev();
-          } else {
-            goNext();
-          }
-        }}
         role="presentation"
+        initial={{ scale: 0.98, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        exit={{ scale: 0.98, opacity: 0 }}
+        transition={{ duration: 0.3, ease: "easeOut" }}
       >
-        <img
-          src={current.src}
-          alt={current.alt}
-          className="max-h-[85vh] max-w-[95vw] rounded-2xl object-contain shadow-2xl"
-        />
-      </div>
+        <Carousel
+          opts={{ align: "center", loop: true }}
+          setApi={setApi}
+          className="w-full"
+        >
+          <CarouselContent containerClassName="touch-pan-y py-2">
+            {images.map((image) => (
+              <CarouselItem key={image.src} className="flex justify-center">
+                <img
+                  src={image.src}
+                  alt={image.alt}
+                  className="max-h-[85vh] w-auto max-w-[95vw] rounded-2xl object-contain shadow-2xl"
+                />
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+        </Carousel>
+      </motion.div>
 
       <div
         className="fixed bottom-[5px] left-1/2 z-10 flex -translate-x-1/2 items-center gap-3 rounded-full bg-black/60 px-3 py-1.5 text-xs text-white backdrop-blur"
@@ -127,7 +142,7 @@ export function VitrineLightbox({
       >
         <button
           type="button"
-          onClick={goPrev}
+          onClick={() => api?.scrollPrev()}
           className="inline-flex items-center gap-1 cursor-pointer"
           aria-label="Foto anterior"
         >
@@ -139,7 +154,7 @@ export function VitrineLightbox({
         </span>
         <button
           type="button"
-          onClick={goNext}
+          onClick={() => api?.scrollNext()}
           className="inline-flex items-center gap-1 cursor-pointer"
           aria-label="Próxima foto"
         >
@@ -147,6 +162,6 @@ export function VitrineLightbox({
           <IconChevronRight className="h-4 w-4" />
         </button>
       </div>
-    </div>
+    </motion.div>
   );
 }

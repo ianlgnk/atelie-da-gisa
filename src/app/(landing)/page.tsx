@@ -18,6 +18,7 @@ import {
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
+import { AnimatePresence } from "framer-motion";
 
 import heroImage from "@/assets/hero.jpg";
 import vitrine01 from "@/assets/vitrine-01.jpg";
@@ -452,13 +453,15 @@ export default function HomePage() {
         </div>
       </footer>
 
-      {selectedIndex !== null && (
-        <VitrineLightbox
-          images={vitrineImages}
-          initialIndex={selectedIndex}
-          onClose={() => setSelectedIndex(null)}
-        />
-      )}
+      <AnimatePresence>
+        {selectedIndex !== null && (
+          <VitrineLightbox
+            images={vitrineImages}
+            initialIndex={selectedIndex}
+            onClose={() => setSelectedIndex(null)}
+          />
+        )}
+      </AnimatePresence>
     </main>
   );
 }
